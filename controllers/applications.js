@@ -5,10 +5,13 @@ const User = require('../models/user.js');
 
 router.get('/', async (req, res) => {
   try {
-    res.render('applications/index.ejs');
+    const currentUser = await User.findById(req.session.user._id); // Look up the user from req.session
+    res.render('applications/index.ejs', {    // Render index.ejs, passing in all of the current user's
+      applications: currentUser.applications,   // applications as data in the context object
+    });
   } catch (error) {
     console.log(error);
-    res.redirect('/');
+    res.redirect('/');      // If any errors, log them and redirect back home
   }
 });
 
