@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Apps</title>
+    <title>Your Applications</title>
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Your Apps</h1>
+    <h1>Your Applications</h1>
+    <a href="/users/<%=user._id%>/applications/new">Add an Application</a>
 </body>
 </html>
