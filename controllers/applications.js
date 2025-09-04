@@ -58,6 +58,23 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:applicationId', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.session.user._id);    // Find the user from req.session
+    // Find the current application from the id supplied by req.params
+    const application = currentUser.applications.id(req.params.applicationId);
+    // this method updates the current application to reflect the new form data on `req.body`
+    application.set(req.body);      // Use the Mongoose .set() method
+    await currentUser.save();       // Save the current user
+    res.redirect(                   // Redirect back to the show view of the current application
+      `/users/${currentUser._id}/applications/${req.params.applicationId}`
+    );
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
+});
+
 router.delete('/:applicationId', async (req, res) => {
   try {
     const currentUser = await User.findById(req.session.user._id);  // Look up the user from req.session
