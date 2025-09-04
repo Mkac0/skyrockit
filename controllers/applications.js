@@ -45,4 +45,17 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/:applicationId', async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.session.user._id);  // Look up the user from req.session
+    // Use the Mongoose .deleteOne() method to delete
+    currentUser.applications.id(req.params.applicationId).deleteOne();  // an application using the id supplied from req.params
+    await currentUser.save();   // Save changes to the user
+    res.redirect(`/users/${currentUser._id}/applications`);   // Redirect back to the applications index view
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');    // If any errors, log them and redirect back home
+  }
+});
+
 module.exports = router;
