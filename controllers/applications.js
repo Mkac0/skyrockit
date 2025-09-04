@@ -19,6 +19,19 @@ router.get('/new', async (req, res) => {
   res.render('applications/new.ejs');
 });
 
+router.get('/:applicationId', async (req, res) => {
+  try {           // Look up the user from req.session
+    const currentUser = await User.findById(req.session.user._id);
+    const application = currentUser.applications.id(req.params.applicationId);  // Find the application by the applicationId supplied from req.params
+    res.render('applications/show.ejs', {   // Render the show view, passing the application data in the context object
+      application: application,
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');      // If any errors, log them and redirect back home
+  }
+});
+
 router.post('/', async (req, res) => {
   try {                            // Look up the user from req.session
     const currentUser = await User.findById(req.session.user._id);
